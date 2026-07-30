@@ -37,15 +37,17 @@ newman run Collections/HomePageRails-US-east-1.postman_collection.json
 mkdir -p Reports
 
 Step 2: Run Newman with report
- newman run Collections/HomePageRails-US-east-1.postman_collection.json\
+newman run Collections/HomePageRails-US-east-1.postman_collection.json \
 -e Environments/Production.postman_environment.json \
--r htmlextra \
---reporter-htmlextra-export Reports/HomePageRails-US-east-1-"today'sDate"-report.html
---reporter-htmlextra-title "Rails Validations Dashboard by swapna.bellamkonda"
+-r cli,htmlextra \
+--reporter-htmlextra-export "Reports/HomePageRails-US-east-1-$(date 
++%Y-%m-%d)-report.html" \
+--reporter-htmlextra-title "Rails Validations Dashboard by 
+swapna.bellamkonda"
 
 
 Step 3: Open report in browser
-open Reports/HomePageRails-US-east-1-"today'sDate"-report.html
+open Reports/HomePageRails-US-east-1-$(date +%Y-%m-%d)-report.html
 
 
 
