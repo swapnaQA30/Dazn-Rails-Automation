@@ -29,25 +29,28 @@ newman -v
 npm install -g newman-reporter-htmlextra
 
 🚀 How to Run
-1. Run Collection (Basic Execution)against Prod Environment
-newman run Collections/HomePageRails-US-east-1.postman_collection.json
--e Environments/Production.postman_environment.json \
-
-2. Run with HTML Report (Recommended)
-mkdir -p Reports
-
-Step 2: Run Newman with report
-newman run Collections/HomePageRails-US-east-1.postman_collection.json \
+1. Run Collection (Basic Execution)against Prod Environment with report
+newman run Collections/HomePageRails-US-east.postman_collection.json \
 -e Environments/Production.postman_environment.json \
 -r cli,htmlextra \
---reporter-htmlextra-export "Reports/HomePageRails-US-east-1-$(date 
-+%Y-%m-%d)-report.html" \
---reporter-htmlextra-title "Rails Validations Dashboard by 
-swapna.bellamkonda"
+--reporter-htmlextra-export "Reports/HomePageRails-US-east-Prod-$(date +%Y-%m-%d)-report.html" \
+--reporter-htmlextra-title "Rails Validations Dashboard by swapna.bellamkonda"
+
+After the run completes:To open the report
+open Reports/HomePageRails-US-east-Prod-$(date +%Y-%m-%d)-report.html
 
 
-Step 3: Open report in browser
-open Reports/HomePageRails-US-east-1-$(date +%Y-%m-%d)-report.html
+
+2.Run Collection (Basic Execution)against Stage Environment with report
+newman run Collections/HomePageRails-US-east.postman_collection.json \
+-e Environments/Stage.postman_environment.json \
+-r cli,htmlextra \
+--reporter-htmlextra-export "Reports/HomePageRails-US-east-Stage-$(date +%Y-%m-%d)-report.html" \
+--reporter-htmlextra-title "Rails Validations Dashboard by swapna.bellamkonda"
+
+After the run completes:To open the report
+open Reports/HomePageRails-US-east-Stage-$(date +%Y-%m-%d)-report.html
+
 
 
 
