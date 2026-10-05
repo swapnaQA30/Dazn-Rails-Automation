@@ -1,0 +1,447 @@
+{
+  "info": {
+    "_postman_id": "56d6a182-3bbd-4ea5-9fa4-dfa075549f94",
+    "name": "LinearChannels -Prod-US-east-1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "37447412",
+    "_collection_link": "https://go.postman.co/collection/43657258-56d6a182-3bbd-4ea5-9fa4-dfa075549f94?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Brazil",
+      "item": [
+        {
+          "name": "Brazil-en-LiveTvSchedule",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n//Get country code and language\npm.test(\"Extract country and languageCode from URL query parameters\", function () {\n    // Get the request URL\n    var requestUrl = pm.request.url.toString();\n    \n    // Use a regular expression to extract 'country' and 'languageCode' from the URL\n    var countryMatch = requestUrl.match(/[?&]country=([a-zA-Z]+)/);\n    var languageCodeMatch = requestUrl.match(/[?&]languageCode=([a-zA-Z]+)/);\n    \n    // Extract values (if matches found)\n    var country = countryMatch ? countryMatch[1] : null;\n    var languageCode = languageCodeMatch ? languageCodeMatch[1] : null;\n    \n    // Log the extracted values to the console\n    console.log(\"Extracted Country from URL:\", country);\n    console.log(\"Extracted Language Code from URL:\", languageCode);\n    \n    // Check if country and languageCode are defined and not null\n    pm.expect(country, 'Country should not be null').to.not.be.null;\n    pm.expect(languageCode, 'LanguageCode should not be null').to.not.be.null;\n\n    // Optionally, check if they are non-empty strings\n    pm.expect(country, 'Country should be a non-empty string').to.not.be.empty;\n    pm.expect(languageCode, 'LanguageCode should be a non-empty string').to.not.be.empty;\n});\n//check any duplicates are present\npm.test(\"Check for duplicate article \", function ()  {\n    // Get the response body as JSON\n    var response = pm.response.json();\n\n    var articles = {};\n    var duplicates = [];\n\n    // Loop through each article in the response\n    response.Tiles.forEach(function (article) {\n        var articleTitle = article.Title;\n\n        // If the article title already exists in the object, mark it as a duplicate\n        if (articles[articleTitle]) {\n            duplicates.push(articleTitle);\n        } else {\n            articles[articleTitle] = true;\n        }\n    });\n\n    // Check if duplicates were found\n    if (duplicates.length > 0) {\n        pm.expect(duplicates.length).to.be.greaterThan(0); // Fail the test if duplicates are found\n        console.log('Duplicate article Titles:', duplicates);\n    } else {\n        console.log('No duplicates found');\n        pm.expect(duplicates.length).to.be.equal(0);  // Pass the test if no duplicates\n    }\n});\n//check, actual, expected,missing  articles articles\npm.test(\"Check if all expected titles are in the API response\", function () {\n    // Define the expected titles\n    var expectedTitles = [ \"NFL Network: Live 24/7 Coverage\", \"Red Bull TV\", \"Unbeaten\", \"Rally TV\"];\n    \n    // Parse the response JSON\n    var response = pm.response.json();\n    \n    // Extract the titles from the API response\n    var actualTitles = response.Tiles.map(function(tile) {\n        return tile.Title;\n    });\n    \n    // Log the expected and actual titles for debugging\n    console.log(\"Expected Titles: \", expectedTitles);\n    console.log(\"Actual Titles: \", actualTitles);\n    \n    // Check if the expected titles are present in the actual titles\n    var missingTitles = expectedTitles.filter(function(title) {\n        return !actualTitles.includes(title);\n    });\n    \n    // If there are missing titles, assert that the missing titles are listed\n    if (missingTitles.length > 0) {\n        console.log(\"Missing Titles: \", missingTitles);\n        pm.expect(missingTitles).to.have.lengthOf(0, 'The following titles are missing: ' + missingTitles.join(', '));\n    } else {\n        pm.expect(missingTitles.length).to.eql(0, 'All expected titles are present.');\n        console.log(\"No Missing Tiles\");\n    }\n\n    // Check if there are any extra titles in the actual response\n    var extraTitles = actualTitles.filter(function(title) {\n        return !expectedTitles.includes(title);\n    });\n    \n    // If there are extra titles, assert that the extra titles are listed\n    if (extraTitles.length > 0) {\n        console.log(\"Extra Titles: \", extraTitles);\n        pm.expect(extraTitles).to.have.lengthOf(0, 'The following extra titles are present: ' + extraTitles.join(', '));\n    } else {\n        pm.expect(extraTitles.length).to.eql(0, 'No extra titles should be present.');\n        console.log(\"No Extra Tiles were present\");\n\n    }\n});\n\n   \n    \n    \n\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://rail-router-us-east-1.discovery.indazn.com/ca/v6/Rail?platform=web&id=Livetvschedule&country=br&languageCode=en",
+              "protocol": "https",
+              "host": [
+                "rail-router-us-east-1",
+                "discovery",
+                "indazn",
+                "com"
+              ],
+              "path": [
+                "ca",
+                "v6",
+                "Rail"
+              ],
+              "query": [
+                {
+                  "key": "platform",
+                  "value": "web"
+                },
+                {
+                  "key": "id",
+                  "value": "Livetvschedule"
+                },
+                {
+                  "key": "country",
+                  "value": "br"
+                },
+                {
+                  "key": "languageCode",
+                  "value": "en"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PT-BR-LiveTVSchedule",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n//Get country code and language\npm.test(\"Extract country and languageCode from URL query parameters\", function () {\n    // Get the request URL\n    var requestUrl = pm.request.url.toString();\n    \n    // Use a regular expression to extract 'country' and 'languageCode' from the URL\n    var countryMatch = requestUrl.match(/[?&]country=([a-zA-Z]+)/);\n    var languageCodeMatch = requestUrl.match(/[?&]languageCode=([a-zA-Z]+)/);\n    \n    // Extract values (if matches found)\n    var country = countryMatch ? countryMatch[1] : null;\n    var languageCode = languageCodeMatch ? languageCodeMatch[1] : null;\n    \n    // Log the extracted values to the console\n    console.log(\"Extracted Country from URL:\", country);\n    console.log(\"Extracted Language Code from URL:\", languageCode);\n    \n    // Check if country and languageCode are defined and not null\n    pm.expect(country, 'Country should not be null').to.not.be.null;\n    pm.expect(languageCode, 'LanguageCode should not be null').to.not.be.null;\n\n    // Optionally, check if they are non-empty strings\n    pm.expect(country, 'Country should be a non-empty string').to.not.be.empty;\n    pm.expect(languageCode, 'LanguageCode should be a non-empty string').to.not.be.empty;\n});\n//check any duplicates are present\npm.test(\"Check for duplicate article \", function ()  {\n    // Get the response body as JSON\n    var response = pm.response.json();\n\n    var articles = {};\n    var duplicates = [];\n\n    // Loop through each article in the response\n    response.Tiles.forEach(function (article) {\n        var articleTitle = article.Title;\n\n        // If the article title already exists in the object, mark it as a duplicate\n        if (articles[articleTitle]) {\n            duplicates.push(articleTitle);\n        } else {\n            articles[articleTitle] = true;\n        }\n    });\n\n    // Check if duplicates were found\n    if (duplicates.length > 0) {\n        pm.expect(duplicates.length).to.be.greaterThan(0); // Fail the test if duplicates are found\n        console.log('Duplicate article Titles:', duplicates);\n    } else {\n        console.log('No duplicates found');\n        pm.expect(duplicates.length).to.be.equal(0);  // Pass the test if no duplicates\n    }\n});\n//check, actual, expected,missing  articles articles\npm.test(\"Check if all expected titles are in the API response\", function () {\n    // Define the expected titles\n    var expectedTitles = [ \"NFL Network\", \"Red Bull TV\", \"Unbeaten\", \"Rally TV\"];\n    \n    // Parse the response JSON\n    var response = pm.response.json();\n    \n    // Extract the titles from the API response\n    var actualTitles = response.Tiles.map(function(tile) {\n        return tile.Title;\n    });\n    \n    // Log the expected and actual titles for debugging\n    console.log(\"Expected Titles: \", expectedTitles);\n    console.log(\"Actual Titles: \", actualTitles);\n    \n    // Check if the expected titles are present in the actual titles\n    var missingTitles = expectedTitles.filter(function(title) {\n        return !actualTitles.includes(title);\n    });\n    \n    // If there are missing titles, assert that the missing titles are listed\n    if (missingTitles.length > 0) {\n        console.log(\"Missing Titles: \", missingTitles);\n        pm.expect(missingTitles).to.have.lengthOf(0, 'The following titles are missing: ' + missingTitles.join(', '));\n    } else {\n        pm.expect(missingTitles.length).to.eql(0, 'All expected titles are present.');\n        console.log(\"No Missing Tiles\");\n    }\n\n    // Check if there are any extra titles in the actual response\n    var extraTitles = actualTitles.filter(function(title) {\n        return !expectedTitles.includes(title);\n    });\n    \n    // If there are extra titles, assert that the extra titles are listed\n    if (extraTitles.length > 0) {\n        console.log(\"Extra Titles: \", extraTitles);\n        pm.expect(extraTitles).to.have.lengthOf(0, 'The following extra titles are present: ' + extraTitles.join(', '));\n    } else {\n        pm.expect(extraTitles.length).to.eql(0, 'No extra titles should be present.');\n        console.log(\"No Extra Tiles were present\");\n\n    }\n});\n\n   \n    \n    \n\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://rail-router-us-east-1.discovery.indazn.com/ca/v6/Rail?platform=web&id=Livetvschedule&country=br&languageCode=pt",
+              "protocol": "https",
+              "host": [
+                "rail-router-us-east-1",
+                "discovery",
+                "indazn",
+                "com"
+              ],
+              "path": [
+                "ca",
+                "v6",
+                "Rail"
+              ],
+              "query": [
+                {
+                  "key": "platform",
+                  "value": "web"
+                },
+                {
+                  "key": "id",
+                  "value": "Livetvschedule"
+                },
+                {
+                  "key": "country",
+                  "value": "br"
+                },
+                {
+                  "key": "languageCode",
+                  "value": "pt"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "canada",
+      "item": [
+        {
+          "name": "Ca-en-LiveTvSchedule",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n//Get country code and language\npm.test(\"Extract country and languageCode from URL query parameters\", function () {\n    // Get the request URL\n    var requestUrl = pm.request.url.toString();\n    \n    // Use a regular expression to extract 'country' and 'languageCode' from the URL\n    var countryMatch = requestUrl.match(/[?&]country=([a-zA-Z]+)/);\n    var languageCodeMatch = requestUrl.match(/[?&]languageCode=([a-zA-Z]+)/);\n    \n    // Extract values (if matches found)\n    var country = countryMatch ? countryMatch[1] : null;\n    var languageCode = languageCodeMatch ? languageCodeMatch[1] : null;\n    \n    // Log the extracted values to the console\n    console.log(\"Extracted Country from URL:\", country);\n    console.log(\"Extracted Language Code from URL:\", languageCode);\n    \n    // Check if country and languageCode are defined and not null\n    pm.expect(country, 'Country should not be null').to.not.be.null;\n    pm.expect(languageCode, 'LanguageCode should not be null').to.not.be.null;\n\n    // Optionally, check if they are non-empty strings\n    pm.expect(country, 'Country should be a non-empty string').to.not.be.empty;\n    pm.expect(languageCode, 'LanguageCode should be a non-empty string').to.not.be.empty;\n});\n//check any duplicates are present\npm.test(\"Check for duplicate article \", function ()  {\n    // Get the response body as JSON\n    var response = pm.response.json();\n\n    var articles = {};\n    var duplicates = [];\n\n    // Loop through each article in the response\n    response.Tiles.forEach(function (article) {\n        var articleTitle = article.Title;\n\n        // If the article title already exists in the object, mark it as a duplicate\n        if (articles[articleTitle]) {\n            duplicates.push(articleTitle);\n        } else {\n            articles[articleTitle] = true;\n        }\n    });\n\n    // Check if duplicates were found\n    if (duplicates.length > 0) {\n        pm.expect(duplicates.length).to.be.greaterThan(0); // Fail the test if duplicates are found\n        console.log('Duplicate article Titles:', duplicates);\n    } else {\n        console.log('No duplicates found');\n        pm.expect(duplicates.length).to.be.equal(0);  // Pass the test if no duplicates\n    }\n});\n//check, actual, expected,missing  articles articles\npm.test(\"Check if all expected titles are in the API response\", function () {\n    // Define the expected titles\n    var expectedTitles = [\"NFL Network\", \"MLB Network\", \"Red Bull TV\", \"Rally TV\", \"Unbeaten: 24/7 Global Sports Channel\"];\n    \n    // Parse the response JSON\n    var response = pm.response.json();\n    \n    // Extract the titles from the API response\n    var actualTitles = response.Tiles.map(function(tile) {\n        return tile.Title;\n    });\n    \n    // Log the expected and actual titles for debugging\n    console.log(\"Expected Titles: \", expectedTitles);\n    console.log(\"Actual Titles: \", actualTitles);\n    \n    // Check if the expected titles are present in the actual titles\n    var missingTitles = expectedTitles.filter(function(title) {\n        return !actualTitles.includes(title);\n    });\n    \n    // If there are missing titles, assert that the missing titles are listed\n    if (missingTitles.length > 0) {\n        console.log(\"Missing Titles: \", missingTitles);\n        pm.expect(missingTitles).to.have.lengthOf(0, 'The following titles are missing: ' + missingTitles.join(', '));\n    } else {\n        pm.expect(missingTitles.length).to.eql(0, 'All expected titles are present.');\n        console.log(\"No Missing Tiles\");\n    }\n\n    // Check if there are any extra titles in the actual response\n    var extraTitles = actualTitles.filter(function(title) {\n        return !expectedTitles.includes(title);\n    });\n    \n    // If there are extra titles, assert that the extra titles are listed\n    if (extraTitles.length > 0) {\n        console.log(\"Extra Titles: \", extraTitles);\n        pm.expect(extraTitles).to.have.lengthOf(0, 'The following extra titles are present: ' + extraTitles.join(', '));\n    } else {\n        pm.expect(extraTitles.length).to.eql(0, 'No extra titles should be present.');\n        console.log(\"No Extra Tiles were present\");\n\n    }\n});\n\n   \n    \n    \n\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://rail-router-us-east-1.discovery.indazn.com/ca/v6/Rail?platform=web&id=Livetvschedule&country=ca&languageCode=en",
+              "protocol": "https",
+              "host": [
+                "rail-router-us-east-1",
+                "discovery",
+                "indazn",
+                "com"
+              ],
+              "path": [
+                "ca",
+                "v6",
+                "Rail"
+              ],
+              "query": [
+                {
+                  "key": "platform",
+                  "value": "web"
+                },
+                {
+                  "key": "id",
+                  "value": "Livetvschedule"
+                },
+                {
+                  "key": "country",
+                  "value": "ca"
+                },
+                {
+                  "key": "languageCode",
+                  "value": "en"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "fr-ca-liveTvSchedule",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n//Get country code and language\npm.test(\"Extract country and languageCode from URL query parameters\", function () {\n    // Get the request URL\n    var requestUrl = pm.request.url.toString();\n    \n    // Use a regular expression to extract 'country' and 'languageCode' from the URL\n    var countryMatch = requestUrl.match(/[?&]country=([a-zA-Z]+)/);\n    var languageCodeMatch = requestUrl.match(/[?&]languageCode=([a-zA-Z]+)/);\n    \n    // Extract values (if matches found)\n    var country = countryMatch ? countryMatch[1] : null;\n    var languageCode = languageCodeMatch ? languageCodeMatch[1] : null;\n    \n    // Log the extracted values to the console\n    console.log(\"Extracted Country from URL:\", country);\n    console.log(\"Extracted Language Code from URL:\", languageCode);\n    \n    // Check if country and languageCode are defined and not null\n    pm.expect(country, 'Country should not be null').to.not.be.null;\n    pm.expect(languageCode, 'LanguageCode should not be null').to.not.be.null;\n\n    // Optionally, check if they are non-empty strings\n    pm.expect(country, 'Country should be a non-empty string').to.not.be.empty;\n    pm.expect(languageCode, 'LanguageCode should be a non-empty string').to.not.be.empty;\n});\n//check any duplicates are present\npm.test(\"Check for duplicate article \", function ()  {\n    // Get the response body as JSON\n    var response = pm.response.json();\n\n    var articles = {};\n    var duplicates = [];\n\n    // Loop through each article in the response\n    response.Tiles.forEach(function (article) {\n        var articleTitle = article.Title;\n\n        // If the article title already exists in the object, mark it as a duplicate\n        if (articles[articleTitle]) {\n            duplicates.push(articleTitle);\n        } else {\n            articles[articleTitle] = true;\n        }\n    });\n\n    // Check if duplicates were found\n    if (duplicates.length > 0) {\n        pm.expect(duplicates.length).to.be.greaterThan(0); // Fail the test if duplicates are found\n        console.log('Duplicate article Titles:', duplicates);\n    } else {\n        console.log('No duplicates found');\n        pm.expect(duplicates.length).to.be.equal(0);  // Pass the test if no duplicates\n    }\n});\n//check, actual, expected,missing  articles articles\npm.test(\"Check if all expected titles are in the API response\", function () {\n    // Define the expected titles\n    var expectedTitles = [ \"NFL Network\", \"MLB Network\", \"Red Bull TV\", \"Rally TV\", \"Unbeaten: 24/7 Global Sports Channel\"];\n    \n    // Parse the response JSON\n    var response = pm.response.json();\n    \n    // Extract the titles from the API response\n    var actualTitles = response.Tiles.map(function(tile) {\n        return tile.Title;\n    });\n    \n    // Log the expected and actual titles for debugging\n    console.log(\"Expected Titles: \", expectedTitles);\n    console.log(\"Actual Titles: \", actualTitles);\n    \n    // Check if the expected titles are present in the actual titles\n    var missingTitles = expectedTitles.filter(function(title) {\n        return !actualTitles.includes(title);\n    });\n    \n    // If there are missing titles, assert that the missing titles are listed\n    if (missingTitles.length > 0) {\n        console.log(\"Missing Titles: \", missingTitles);\n        pm.expect(missingTitles).to.have.lengthOf(0, 'The following titles are missing: ' + missingTitles.join(', '));\n    } else {\n        pm.expect(missingTitles.length).to.eql(0, 'All expected titles are present.');\n        console.log(\"No Missing Tiles\");\n    }\n\n    // Check if there are any extra titles in the actual response\n    var extraTitles = actualTitles.filter(function(title) {\n        return !expectedTitles.includes(title);\n    });\n    \n    // If there are extra titles, assert that the extra titles are listed\n    if (extraTitles.length > 0) {\n        console.log(\"Extra Titles: \", extraTitles);\n        pm.expect(extraTitles).to.have.lengthOf(0, 'The following extra titles are present: ' + extraTitles.join(', '));\n    } else {\n        pm.expect(extraTitles.length).to.eql(0, 'No extra titles should be present.');\n        console.log(\"No Extra Tiles were present\");\n\n    }\n});\n\n   \n    \n    \n\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://rail-router-us-east-1.discovery.indazn.com/ca/v6/Rail?platform=web&id=Livetvschedule&country=ca&languageCode=fr",
+              "protocol": "https",
+              "host": [
+                "rail-router-us-east-1",
+                "discovery",
+                "indazn",
+                "com"
+              ],
+              "path": [
+                "ca",
+                "v6",
+                "Rail"
+              ],
+              "query": [
+                {
+                  "key": "platform",
+                  "value": "web"
+                },
+                {
+                  "key": "id",
+                  "value": "Livetvschedule"
+                },
+                {
+                  "key": "country",
+                  "value": "ca"
+                },
+                {
+                  "key": "languageCode",
+                  "value": "fr"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "US",
+      "item": [
+        {
+          "name": "US-en-LiveTVSchedule",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n//Get country code and language\npm.test(\"Extract country and languageCode from URL query parameters\", function () {\n    // Get the request URL\n    var requestUrl = pm.request.url.toString();\n    \n    // Use a regular expression to extract 'country' and 'languageCode' from the URL\n    var countryMatch = requestUrl.match(/[?&]country=([a-zA-Z]+)/);\n    var languageCodeMatch = requestUrl.match(/[?&]languageCode=([a-zA-Z]+)/);\n    \n    // Extract values (if matches found)\n    var country = countryMatch ? countryMatch[1] : null;\n    var languageCode = languageCodeMatch ? languageCodeMatch[1] : null;\n    \n    // Log the extracted values to the console\n    console.log(\"Extracted Country from URL:\", country);\n    console.log(\"Extracted Language Code from URL:\", languageCode);\n    \n    // Check if country and languageCode are defined and not null\n    pm.expect(country, 'Country should not be null').to.not.be.null;\n    pm.expect(languageCode, 'LanguageCode should not be null').to.not.be.null;\n\n    // Optionally, check if they are non-empty strings\n    pm.expect(country, 'Country should be a non-empty string').to.not.be.empty;\n    pm.expect(languageCode, 'LanguageCode should be a non-empty string').to.not.be.empty;\n});\n//check any duplicates are present\npm.test(\"Check for duplicate article \", function ()  {\n    // Get the response body as JSON\n    var response = pm.response.json();\n\n    var articles = {};\n    var duplicates = [];\n\n    // Loop through each article in the response\n    response.Tiles.forEach(function (article) {\n        var articleTitle = article.Title;\n\n        // If the article title already exists in the object, mark it as a duplicate\n        if (articles[articleTitle]) {\n            duplicates.push(articleTitle);\n        } else {\n            articles[articleTitle] = true;\n        }\n    });\n\n    // Check if duplicates were found\n    if (duplicates.length > 0) {\n        pm.expect(duplicates.length).to.be.greaterThan(0); // Fail the test if duplicates are found\n        console.log('Duplicate article Titles:', duplicates);\n    } else {\n        console.log('No duplicates found');\n        pm.expect(duplicates.length).to.be.equal(0);  // Pass the test if no duplicates\n    }\n});\n//check, actual, expected,missing  articles articles\npm.test(\"Check if all expected titles are in the API response\", function () {\n    // Define the expected titles\n    var expectedTitles = [ \"DAZN 1 USA\", \"Fubo Sports\", \"Red Bull TV: Extreme Sports Channel\", \"Rally TV\", \"Unbeaten: 24/7 Global Sports Channel\"];\n    \n    // Parse the response JSON\n    var response = pm.response.json();\n    \n    // Extract the titles from the API response\n    var actualTitles = response.Tiles.map(function(tile) {\n        return tile.Title;\n    });\n    \n    // Log the expected and actual titles for debugging\n    console.log(\"Expected Titles: \", expectedTitles);\n    console.log(\"Actual Titles: \", actualTitles);\n    \n    // Check if the expected titles are present in the actual titles\n    var missingTitles = expectedTitles.filter(function(title) {\n        return !actualTitles.includes(title);\n    });\n    \n    // If there are missing titles, assert that the missing titles are listed\n    if (missingTitles.length > 0) {\n        console.log(\"Missing Titles: \", missingTitles);\n        pm.expect(missingTitles).to.have.lengthOf(0, 'The following titles are missing: ' + missingTitles.join(', '));\n    } else {\n        pm.expect(missingTitles.length).to.eql(0, 'All expected titles are present.');\n        console.log(\"No Missing Tiles\");\n    }\n\n    // Check if there are any extra titles in the actual response\n    var extraTitles = actualTitles.filter(function(title) {\n        return !expectedTitles.includes(title);\n    });\n    \n    // If there are extra titles, assert that the extra titles are listed\n    if (extraTitles.length > 0) {\n        console.log(\"Extra Titles: \", extraTitles);\n        pm.expect(extraTitles).to.have.lengthOf(0, 'The following extra titles are present: ' + extraTitles.join(', '));\n    } else {\n        pm.expect(extraTitles.length).to.eql(0, 'No extra titles should be present.');\n        console.log(\"No Extra Tiles were present\");\n\n    }\n});\n\n   \n    \n    \n\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://rail-router-us-east-1.discovery.indazn.com/ca/v6/Rail?platform=web&id=Livetvschedule&country=us&languageCode=en",
+              "protocol": "https",
+              "host": [
+                "rail-router-us-east-1",
+                "discovery",
+                "indazn",
+                "com"
+              ],
+              "path": [
+                "ca",
+                "v6",
+                "Rail"
+              ],
+              "query": [
+                {
+                  "key": "platform",
+                  "value": "web"
+                },
+                {
+                  "key": "id",
+                  "value": "Livetvschedule"
+                },
+                {
+                  "key": "country",
+                  "value": "us"
+                },
+                {
+                  "key": "languageCode",
+                  "value": "en"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "US-es-LiveTVSchedule",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n//Get country code and language\npm.test(\"Extract country and languageCode from URL query parameters\", function () {\n    // Get the request URL\n    var requestUrl = pm.request.url.toString();\n    \n    // Use a regular expression to extract 'country' and 'languageCode' from the URL\n    var countryMatch = requestUrl.match(/[?&]country=([a-zA-Z]+)/);\n    var languageCodeMatch = requestUrl.match(/[?&]languageCode=([a-zA-Z]+)/);\n    \n    // Extract values (if matches found)\n    var country = countryMatch ? countryMatch[1] : null;\n    var languageCode = languageCodeMatch ? languageCodeMatch[1] : null;\n    \n    // Log the extracted values to the console\n    console.log(\"Extracted Country from URL:\", country);\n    console.log(\"Extracted Language Code from URL:\", languageCode);\n    \n    // Check if country and languageCode are defined and not null\n    pm.expect(country, 'Country should not be null').to.not.be.null;\n    pm.expect(languageCode, 'LanguageCode should not be null').to.not.be.null;\n\n    // Optionally, check if they are non-empty strings\n    pm.expect(country, 'Country should be a non-empty string').to.not.be.empty;\n    pm.expect(languageCode, 'LanguageCode should be a non-empty string').to.not.be.empty;\n});\n//check any duplicates are present\npm.test(\"Check for duplicate article \", function ()  {\n    // Get the response body as JSON\n    var response = pm.response.json();\n\n    var articles = {};\n    var duplicates = [];\n\n    // Loop through each article in the response\n    response.Tiles.forEach(function (article) {\n        var articleTitle = article.Title;\n\n        // If the article title already exists in the object, mark it as a duplicate\n        if (articles[articleTitle]) {\n            duplicates.push(articleTitle);\n        } else {\n            articles[articleTitle] = true;\n        }\n    });\n\n    // Check if duplicates were found\n    if (duplicates.length > 0) {\n        pm.expect(duplicates.length).to.be.greaterThan(0); // Fail the test if duplicates are found\n        console.log('Duplicate article Titles:', duplicates);\n    } else {\n        console.log('No duplicates found');\n        pm.expect(duplicates.length).to.be.equal(0);  // Pass the test if no duplicates\n    }\n});\n//check, actual, expected,missing  articles articles\npm.test(\"Check if all expected titles are in the API response\", function () {\n    // Define the expected titles\n    var expectedTitles = [\"DAZN 1 USA\", \"Fubo Sports\", \"Red Bull TV\", \"Rally TV\", \"Unbeaten: 24/7 Global Sports Channel\"];\n    \n    // Parse the response JSON\n    var response = pm.response.json();\n    \n    // Extract the titles from the API response\n    var actualTitles = response.Tiles.map(function(tile) {\n        return tile.Title;\n    });\n    \n    // Log the expected and actual titles for debugging\n    console.log(\"Expected Titles: \", expectedTitles);\n    console.log(\"Actual Titles: \", actualTitles);\n    \n    // Check if the expected titles are present in the actual titles\n    var missingTitles = expectedTitles.filter(function(title) {\n        return !actualTitles.includes(title);\n    });\n    \n    // If there are missing titles, assert that the missing titles are listed\n    if (missingTitles.length > 0) {\n        console.log(\"Missing Titles: \", missingTitles);\n        pm.expect(missingTitles).to.have.lengthOf(0, 'The following titles are missing: ' + missingTitles.join(', '));\n    } else {\n        pm.expect(missingTitles.length).to.eql(0, 'All expected titles are present.');\n        console.log(\"No Missing Tiles\");\n    }\n\n    // Check if there are any extra titles in the actual response\n    var extraTitles = actualTitles.filter(function(title) {\n        return !expectedTitles.includes(title);\n    });\n    \n    // If there are extra titles, assert that the extra titles are listed\n    if (extraTitles.length > 0) {\n        console.log(\"Extra Titles: \", extraTitles);\n        pm.expect(extraTitles).to.have.lengthOf(0, 'The following extra titles are present: ' + extraTitles.join(', '));\n    } else {\n        pm.expect(extraTitles.length).to.eql(0, 'No extra titles should be present.');\n        console.log(\"No Extra Tiles were present\");\n\n    }\n});\n\n   \n    \n    \n\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://rail-router.discovery.indazn.com/ca/v6/Rail?platform=web&id=Livetvschedule&country=us&languageCode=es",
+              "protocol": "https",
+              "host": [
+                "rail-router",
+                "discovery",
+                "indazn",
+                "com"
+              ],
+              "path": [
+                "ca",
+                "v6",
+                "Rail"
+              ],
+              "query": [
+                {
+                  "key": "platform",
+                  "value": "web"
+                },
+                {
+                  "key": "id",
+                  "value": "Livetvschedule"
+                },
+                {
+                  "key": "country",
+                  "value": "us"
+                },
+                {
+                  "key": "languageCode",
+                  "value": "es"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "ROW-Mexico",
+      "item": [
+        {
+          "name": "MX-en-LivetvSchedule",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n//Get country code and language\npm.test(\"Extract country and languageCode from URL query parameters\", function () {\n    // Get the request URL\n    var requestUrl = pm.request.url.toString();\n    \n    // Use a regular expression to extract 'country' and 'languageCode' from the URL\n    var countryMatch = requestUrl.match(/[?&]country=([a-zA-Z]+)/);\n    var languageCodeMatch = requestUrl.match(/[?&]languageCode=([a-zA-Z]+)/);\n    \n    // Extract values (if matches found)\n    var country = countryMatch ? countryMatch[1] : null;\n    var languageCode = languageCodeMatch ? languageCodeMatch[1] : null;\n    \n    // Log the extracted values to the console\n    console.log(\"Extracted Country from URL:\", country);\n    console.log(\"Extracted Language Code from URL:\", languageCode);\n    \n    // Check if country and languageCode are defined and not null\n    pm.expect(country, 'Country should not be null').to.not.be.null;\n    pm.expect(languageCode, 'LanguageCode should not be null').to.not.be.null;\n\n    // Optionally, check if they are non-empty strings\n    pm.expect(country, 'Country should be a non-empty string').to.not.be.empty;\n    pm.expect(languageCode, 'LanguageCode should be a non-empty string').to.not.be.empty;\n});\n//check any duplicates are present\npm.test(\"Check for duplicate article \", function ()  {\n    // Get the response body as JSON\n    var response = pm.response.json();\n\n    var articles = {};\n    var duplicates = [];\n\n    // Loop through each article in the response\n    response.Tiles.forEach(function (article) {\n        var articleTitle = article.Title;\n\n        // If the article title already exists in the object, mark it as a duplicate\n        if (articles[articleTitle]) {\n            duplicates.push(articleTitle);\n        } else {\n            articles[articleTitle] = true;\n        }\n    });\n\n    // Check if duplicates were found\n    if (duplicates.length > 0) {\n        pm.expect(duplicates.length).to.be.greaterThan(0); // Fail the test if duplicates are found\n        console.log('Duplicate article Titles:', duplicates);\n    } else {\n        console.log('No duplicates found');\n        pm.expect(duplicates.length).to.be.equal(0);  // Pass the test if no duplicates\n    }\n});\n//check, actual, expected,missing  articles articles\npm.test(\"Check if all expected titles are in the API response\", function () {\n    // Define the expected titles\n    var expectedTitles = [ \"NFL Network: Live 24/7 Coverage\", \"Rally TV\", \"Red Bull TV: Extreme Sports Channel\", \"Unbeaten: 24/7 Global Sports Channel\"];\n    \n    // Parse the response JSON\n    var response = pm.response.json();\n    \n    // Extract the titles from the API response\n    var actualTitles = response.Tiles.map(function(tile) {\n        return tile.Title;\n    });\n    \n    // Log the expected and actual titles for debugging\n    console.log(\"Expected Titles: \", expectedTitles);\n    console.log(\"Actual Titles: \", actualTitles);\n    \n    // Check if the expected titles are present in the actual titles\n    var missingTitles = expectedTitles.filter(function(title) {\n        return !actualTitles.includes(title);\n    });\n    \n    // If there are missing titles, assert that the missing titles are listed\n    if (missingTitles.length > 0) {\n        console.log(\"Missing Titles: \", missingTitles);\n        pm.expect(missingTitles).to.have.lengthOf(0, 'The following titles are missing: ' + missingTitles.join(', '));\n    } else {\n        pm.expect(missingTitles.length).to.eql(0, 'All expected titles are present.');\n        console.log(\"No Missing Tiles\");\n    }\n\n    // Check if there are any extra titles in the actual response\n    var extraTitles = actualTitles.filter(function(title) {\n        return !expectedTitles.includes(title);\n    });\n    \n    // If there are extra titles, assert that the extra titles are listed\n    if (extraTitles.length > 0) {\n        console.log(\"Extra Titles: \", extraTitles);\n        pm.expect(extraTitles).to.have.lengthOf(0, 'The following extra titles are present: ' + extraTitles.join(', '));\n    } else {\n        pm.expect(extraTitles.length).to.eql(0, 'No extra titles should be present.');\n        console.log(\"No Extra Tiles were present\");\n\n    }\n});\n\n   \n    \n    \n\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://rail-router.discovery.indazn.com/ca/v6/Rail?platform=web&id=Livetvschedule&country=mx&languageCode=en",
+              "protocol": "https",
+              "host": [
+                "rail-router",
+                "discovery",
+                "indazn",
+                "com"
+              ],
+              "path": [
+                "ca",
+                "v6",
+                "Rail"
+              ],
+              "query": [
+                {
+                  "key": "platform",
+                  "value": "web"
+                },
+                {
+                  "key": "id",
+                  "value": "Livetvschedule"
+                },
+                {
+                  "key": "country",
+                  "value": "mx"
+                },
+                {
+                  "key": "languageCode",
+                  "value": "en"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "MX-es-LiveTVSchedule",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n//Get country code and language\npm.test(\"Extract country and languageCode from URL query parameters\", function () {\n    // Get the request URL\n    var requestUrl = pm.request.url.toString();\n    \n    // Use a regular expression to extract 'country' and 'languageCode' from the URL\n    var countryMatch = requestUrl.match(/[?&]country=([a-zA-Z]+)/);\n    var languageCodeMatch = requestUrl.match(/[?&]languageCode=([a-zA-Z]+)/);\n    \n    // Extract values (if matches found)\n    var country = countryMatch ? countryMatch[1] : null;\n    var languageCode = languageCodeMatch ? languageCodeMatch[1] : null;\n    \n    // Log the extracted values to the console\n    console.log(\"Extracted Country from URL:\", country);\n    console.log(\"Extracted Language Code from URL:\", languageCode);\n    \n    // Check if country and languageCode are defined and not null\n    pm.expect(country, 'Country should not be null').to.not.be.null;\n    pm.expect(languageCode, 'LanguageCode should not be null').to.not.be.null;\n\n    // Optionally, check if they are non-empty strings\n    pm.expect(country, 'Country should be a non-empty string').to.not.be.empty;\n    pm.expect(languageCode, 'LanguageCode should be a non-empty string').to.not.be.empty;\n});\n//check any duplicates are present\npm.test(\"Check for duplicate article \", function ()  {\n    // Get the response body as JSON\n    var response = pm.response.json();\n\n    var articles = {};\n    var duplicates = [];\n\n    // Loop through each article in the response\n    response.Tiles.forEach(function (article) {\n        var articleTitle = article.Title;\n\n        // If the article title already exists in the object, mark it as a duplicate\n        if (articles[articleTitle]) {\n            duplicates.push(articleTitle);\n        } else {\n            articles[articleTitle] = true;\n        }\n    });\n\n    // Check if duplicates were found\n    if (duplicates.length > 0) {\n        pm.expect(duplicates.length).to.be.greaterThan(0); // Fail the test if duplicates are found\n        console.log('Duplicate article Titles:', duplicates);\n    } else {\n        console.log('No duplicates found');\n        pm.expect(duplicates.length).to.be.equal(0);  // Pass the test if no duplicates\n    }\n});\n//check, actual, expected,missing  articles articles\npm.test(\"Check if all expected titles are in the API response\", function () {\n    // Define the expected titles\n    var expectedTitles = [\"NFL Network\", \"Rally TV\", \"Red Bull TV: Extreme Sports Channel\", \"Unbeaten: 24/7 Global Sports Channel\"];\n    \n    // Parse the response JSON\n    var response = pm.response.json();\n    \n    // Extract the titles from the API response\n    var actualTitles = response.Tiles.map(function(tile) {\n        return tile.Title;\n    });\n    \n    // Log the expected and actual titles for debugging\n    console.log(\"Expected Titles: \", expectedTitles);\n    console.log(\"Actual Titles: \", actualTitles);\n    \n    // Check if the expected titles are present in the actual titles\n    var missingTitles = expectedTitles.filter(function(title) {\n        return !actualTitles.includes(title);\n    });\n    \n    // If there are missing titles, assert that the missing titles are listed\n    if (missingTitles.length > 0) {\n        console.log(\"Missing Titles: \", missingTitles);\n        pm.expect(missingTitles).to.have.lengthOf(0, 'The following titles are missing: ' + missingTitles.join(', '));\n    } else {\n        pm.expect(missingTitles.length).to.eql(0, 'All expected titles are present.');\n        console.log(\"No Missing Tiles\");\n    }\n\n    // Check if there are any extra titles in the actual response\n    var extraTitles = actualTitles.filter(function(title) {\n        return !expectedTitles.includes(title);\n    });\n    \n    // If there are extra titles, assert that the extra titles are listed\n    if (extraTitles.length > 0) {\n        console.log(\"Extra Titles: \", extraTitles);\n        pm.expect(extraTitles).to.have.lengthOf(0, 'The following extra titles are present: ' + extraTitles.join(', '));\n    } else {\n        pm.expect(extraTitles.length).to.eql(0, 'No extra titles should be present.');\n        console.log(\"No Extra Tiles were present\");\n\n    }\n});\n\n   \n    \n    \n\n\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://rail-router.discovery.indazn.com/ca/v6/Rail?platform=web&id=Livetvschedule&country=mx&languageCode=es",
+              "protocol": "https",
+              "host": [
+                "rail-router",
+                "discovery",
+                "indazn",
+                "com"
+              ],
+              "path": [
+                "ca",
+                "v6",
+                "Rail"
+              ],
+              "query": [
+                {
+                  "key": "platform",
+                  "value": "web"
+                },
+                {
+                  "key": "id",
+                  "value": "Livetvschedule"
+                },
+                {
+                  "key": "country",
+                  "value": "mx"
+                },
+                {
+                  "key": "languageCode",
+                  "value": "es"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
